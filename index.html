@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohamed Sayid Lotfy – Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#030810;--surf:#080f18;--surf2:#0d1825;--brd:#152030;
+  --acc:#00e5ff;--acc2:#7c3aed;--grn:#00ff88;--red:#ff4466;
+  --ylw:#ffd700;--txt:#dceeff;--mut:#4a7a9b;
+  --mono:'JetBrains Mono',monospace;--dis:'Syne',sans-serif;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--txt);font-family:var(--mono)}
+
+/* ── MATRIX ── */
+#mx{position:fixed;inset:0;z-index:0;opacity:.055;pointer-events:none}
+
+/* ── CURSOR ── */
+#cur{width:9px;height:9px;background:var(--acc);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:screen;transform:translate(-50%,-50%)}
+#cur-r{width:32px;height:32px;border:1px solid rgba(0,229,255,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.ld-p{font-family:var(--mono);font-size:44px;font-weight:700;color:var(--acc)}
+.ld-bw{width:200px;height:2px;background:var(--brd);border-radius:2px;overflow:hidden}
+.ld-b{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));width:0}
+.ld-t{font-size:11px;color:var(--mut);letter-spacing:.18em;text-transform:uppercase}
+
+/* ── TOP BAR ── */
+#bar{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(3,8,16,.93);border-bottom:1px solid var(--brd);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-between;padding:11px 36px;height:52px}
+.brand{font-size:13px;color:var(--acc);letter-spacing:.08em;display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none}
+.bdot{width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 8px var(--grn);animation:blink 2s infinite}
+@keyframes blink{50%{opacity:0}}
+.back-btn{display:none;align-items:center;gap:8px;font-size:11px;color:var(--mut);cursor:pointer;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;border:none;background:none;font-family:var(--mono)}
+.back-btn:hover{color:var(--acc)}
+.back-btn svg{width:14px;height:14px}
+#page-title{font-size:11px;color:var(--acc);letter-spacing:.2em;text-transform:uppercase;opacity:0}
+
+/* ── SOCIAL SIDEBAR ── */
+#soc{position:fixed;left:20px;top:50%;transform:translateY(-50%);z-index:400;display:flex;flex-direction:column;align-items:center}
+#soc::before,#soc::after{content:'';width:1px;height:52px;background:linear-gradient(to bottom,transparent,var(--mut))}
+#soc::after{background:linear-gradient(to top,transparent,var(--mut))}
+.si{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--mut);text-decoration:none;border-radius:7px;transition:all .25s;margin:3px 0;position:relative}
+.si:hover{color:var(--acc);background:rgba(0,229,255,.08);transform:translateX(4px)}
+.si svg{width:15px;height:15px}
+.st{position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:var(--surf2);border:1px solid var(--brd);color:var(--txt);font-size:10px;padding:3px 9px;border-radius:3px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s;letter-spacing:.05em}
+.si:hover .st{opacity:1}
+
+/* ── PAGE WRAPPER ── */
+#app{position:fixed;inset:0;top:52px;overflow:hidden}
+
+/* ── HOME PAGE ── */
+#pg-home{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 clamp(70px,10vw,160px) 60px clamp(90px,13vw,200px)}
+
+.home-hero{min-height:calc(100vh - 52px);display:flex;align-items:center;position:relative}
+.home-content{flex:1}
+.eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:24px;overflow:hidden}
+.ey-line{width:0;height:1px;background:var(--acc)}
+.ey-txt{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);opacity:0}
+.home-h1{font-family:var(--dis);font-size:clamp(50px,8vw,100px);font-weight:800;line-height:.9;letter-spacing:-.04em;margin-bottom:32px;overflow:hidden}
+.h1l{display:block;clip-path:inset(0 0 100% 0)}
+.h1l.c{color:var(--acc)}
+.home-sub{font-size:14px;color:var(--mut);max-width:400px;line-height:1.85;margin-bottom:40px;opacity:0}
+.home-meta{display:flex;flex-wrap:wrap;gap:16px;opacity:0;margin-bottom:56px}
+.hm{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:7px}
+.hm .l{color:var(--acc)}
+.status-chip{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(0,255,136,.3);border-radius:8px;padding:10px 18px;background:rgba(0,255,136,.04);font-size:11px;color:var(--grn);letter-spacing:.1em;text-transform:uppercase;opacity:0}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 10px var(--grn);animation:glow 2s infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 8px var(--grn)}50%{box-shadow:0 0 20px var(--grn)}}
+
+/* ── NAV CARDS GRID ── */
+.nav-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:60px}
+.nav-card{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:24px 22px;cursor:pointer;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;user-select:none}
+.nav-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.06) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.nav-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.nav-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.nav-card:hover::before{opacity:1}
+.nav-card:hover::after{transform:scaleX(1)}
+.nc-0::after{background:linear-gradient(90deg,var(--acc),#00aaff)}
+.nc-1::after{background:linear-gradient(90deg,var(--acc2),#a855f7)}
+.nc-2::after{background:linear-gradient(90deg,var(--grn),#00cc66)}
+.nc-3::after{background:linear-gradient(90deg,var(--ylw),var(--red))}
+.nc-4::after{background:linear-gradient(90deg,#ff8c00,var(--red))}
+.nc-5::after{background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.nc-0:hover{border-color:rgba(0,229,255,.4)}
+.nc-1:hover{border-color:rgba(124,58,237,.4)}
+.nc-2:hover{border-color:rgba(0,255,136,.4)}
+.nc-3:hover{border-color:rgba(255,215,0,.4)}
+.nc-4:hover{border-color:rgba(255,140,0,.4)}
+.nc-5:hover{border-color:rgba(0,229,255,.4)}
+.nc-ico{font-size:26px;margin-bottom:14px}
+.nc-num{font-size:10px;color:var(--mut);letter-spacing:.15em;margin-bottom:6px}
+.nc-name{font-family:var(--dis);font-size:16px;font-weight:700;margin-bottom:6px;color:var(--txt)}
+.nc-hint{font-size:11px;color:var(--mut);line-height:1.5}
+.nc-arrow{position:absolute;right:18px;bottom:18px;color:var(--mut);font-size:16px;transition:all .25s}
+.nav-card:hover .nc-arrow{color:var(--acc);transform:translate(3px,-3px)}
+
+/* ── PAGE OVERLAY ── */
+.page-overlay{position:absolute;inset:0;background:var(--bg);z-index:100;display:none;overflow-y:auto;padding:40px clamp(24px,6vw,100px) 60px clamp(50px,8vw,120px)}
+
+/* ── PAGE SHARED ── */
+.pg-back-area{display:flex;align-items:center;justify-content:space-between;margin-bottom:52px}
+.pg-label{font-size:11px;color:var(--mut);letter-spacing:.15em;text-transform:uppercase}
+.pg-h{font-family:var(--dis);font-size:clamp(32px,5vw,60px);font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:8px}
+.pg-h .c{color:var(--acc)}
+.pg-divider{height:1px;background:linear-gradient(90deg,var(--acc),transparent);margin-bottom:48px}
+
+/* ── EXPERIENCE PAGE ── */
+.tl{position:relative;padding-left:0}
+.tl::before{content:'';position:absolute;left:180px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--acc),rgba(0,229,255,.05))}
+.tli{display:grid;grid-template-columns:180px 1fr;gap:0;padding-bottom:52px;cursor:default}
+.tli:last-child{padding-bottom:0}
+.tld{font-size:11px;color:var(--mut);text-align:right;padding:5px 26px 0 0;line-height:1.5}
+.tlb{padding-left:38px;position:relative}
+.tlb::before{content:'';position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--acc);box-shadow:0 0 12px rgba(0,229,255,.5)}
+.tli:hover .tlb::before{box-shadow:0 0 20px rgba(0,229,255,.9)}
+.tlr{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.tlc{font-size:12px;color:var(--acc);margin-bottom:14px}
+.tlul{list-style:none}
+.tlul li{font-size:12px;color:var(--mut);padding-left:18px;position:relative;margin-bottom:6px;line-height:1.65}
+.tlul li::before{content:'→';position:absolute;left:0;color:var(--acc)}
+
+/* ── EDUCATION PAGE ── */
+.edu-list{display:flex;flex-direction:column;gap:16px}
+.edu-c{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:28px 32px;transition:all .3s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.edu-c::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,229,255,.04),transparent 50%);opacity:0;transition:opacity .3s}
+.edu-c:hover{transform:translateX(8px);border-color:rgba(0,229,255,.35);box-shadow:-4px 0 0 var(--acc)}
+.edu-c:hover::before{opacity:1}
+.edu-deg{font-size:15px;font-weight:700;margin-bottom:4px}
+.edu-sch{font-size:12px;color:var(--acc);margin-bottom:12px}
+.edu-tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:10px;padding:3px 10px;border-radius:3px;border:1px solid;letter-spacing:.05em}
+.tc{border-color:rgba(0,229,255,.3);color:var(--acc)}.tg{border-color:rgba(0,255,136,.3);color:var(--grn)}.tp{border-color:rgba(124,58,237,.4);color:#a78bfa}.tm{border-color:var(--brd);color:var(--mut)}
+
+/* ── PROJECTS & ACHIEVEMENTS PAGE ── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.proj-c{background:var(--surf);border:1px solid var(--brd);border-radius:12px;padding:28px;position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .35s,box-shadow .35s}
+.proj-c:hover{transform:translateY(-7px);border-color:rgba(0,229,255,.25);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.pe{font-size:28px;margin-bottom:16px}
+.pn{font-size:14px;font-weight:700;margin-bottom:7px;color:var(--txt)}
+.pd{font-size:12px;color:var(--mut);line-height:1.7;margin-bottom:18px}
+
+/* ── SKILLS PAGE ── */
+.skills-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-bottom:52px}
+.sg{background:var(--surf);border:1px solid var(--brd);border-radius:10px;padding:22px;transition:border-color .25s}
+.sg:hover{border-color:rgba(0,229,255,.25)}
+.sgl{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sgl::after{content:'';flex:1;height:1px;background:var(--brd)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11px;padding:5px 12px;background:var(--surf2);border:1px solid var(--brd);border-radius:20px;color:#7aaac8;transition:all .2s;cursor:default}
+.chip:hover{border-color:rgba(0,229,255,.45);color:var(--acc);background:rgba(0,229,255,.07);transform:scale(1.04)}
+/* certs */
+.certs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.cci{display:flex;align-items:center;gap:14px;padding:15px 20px;background:var(--surf);border:1px solid var(--brd);border-radius:8px;transition:all .25s;position:relative;overflow:hidden}
+.cci:hover{border-color:rgba(0,229,255,.3);transform:translateX(4px)}
+.ci{width:36px;height:36px;border-radius:8px;background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.15);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.cn{font-size:12px;color:var(--txt);line-height:1.4}
+
+/* ── CONTACT PAGE ── */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-left h3{font-family:var(--dis);font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:18px}
+.contact-left h3 .c{color:var(--acc)}
+.contact-left p{font-size:13px;color:var(--mut);line-height:1.85;margin-bottom:32px}
+.cta{display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border:1px solid var(--acc);color:var(--acc);border-radius:6px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .25s}
+.cta:hover{background:var(--acc);color:var(--bg);box-shadow:0 0 28px rgba(0,229,255,.3)}
+.contact-right{display:flex;flex-direction:column;gap:12px}
+.clc{display:flex;align-items:center;gap:16px;padding:17px 20px;background:var(--surf2);border:1px solid var(--brd);border-radius:10px;text-decoration:none;transition:all .25s;position:relative;overflow:hidden}
+.clc:hover{border-color:rgba(0,229,255,.35);transform:translateY(-3px)}
+.clic{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.clic.li{background:rgba(10,102,194,.12);border:1px solid rgba(10,102,194,.3)}
+.clic.gm{background:rgba(234,67,53,.12);border:1px solid rgba(234,67,53,.3)}
+.cl-i{flex:1}
+.clp{font-size:10px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:2px}
+.clp.li{color:#5ba4e3}.clp.gm{color:#ea4335}
+.clh{font-size:13px;color:var(--txt)}
+
+/* ── SUMMARY PAGE ── */
+.sum-box{border:1px solid var(--brd);border-left:3px solid var(--acc);border-radius:0 10px 10px 0;padding:36px 44px;background:var(--surf);font-size:16px;line-height:1.95;color:#7aaac8;position:relative}
+.hl{color:var(--txt)}.hla{color:var(--acc)}
+.sum-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:40px}
+.stat-c{background:var(--surf);border:1px solid var(--brd);border-radius:10px;padding:20px 22px;text-align:center;transition:all .25s}
+.stat-n{font-family:var(--dis);font-size:32px;font-weight:800;color:var(--acc);margin-bottom:4px}
+.stat-l{font-size:11px;color:var(--mut);letter-spacing:.08em}
+
+@media(max-width:700px){
+  .contact-wrap{grid-template-columns:1fr;gap:36px}
+  #soc{display:none}
+  .tl::before{left:0}.tli{grid-template-columns:1fr}
+  .tld{text-align:left;padding-right:0;margin-bottom:6px}
+  .tlb{padding-left:18px}
+  #pg-home{padding:0 20px 60px 20px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="mx"></canvas>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<div id="loader">
+  <div class="ld-p" id="ld-p">0%</div>
+  <div class="ld-bw"><div class="ld-b" id="ld-b"></div></div>
+  <div class="ld-t" id="ld-t">Initializing...</div>
+</div>
+
+<div id="bar">
+  <a class="brand" onclick="goHome()" href="#">
+    <div class="bdot"></div>
+    MOHAMED.LOTFY <span style="color:var(--mut);margin-left:4px;">// PORTFOLIO</span>
+  </a>
+  <div id="page-title"></div>
+  <button class="back-btn" id="back-btn" onclick="goHome()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back
+  </button>
+</div>
+
+<div id="app">
+
+  <div id="pg-home">
+    <div class="home-hero">
+      <div class="home-content">
+        <div class="eyebrow">
+          <div class="ey-line" id="eyl"></div>
+          <div class="ey-txt" id="eyt">Network & System Administrator</div>
+        </div>
+        <div class="home-h1">
+          <span class="h1l" id="h1a">MOHAMED</span>
+          <span class="h1l c" id="h1b">S. LOTFY</span>
+        </div>
+        <p class="home-sub" id="hsub">Cisco Certified (CCNA/CCNP Core) · IT Specialist<br>Expertise in Infrastructure & Network Security</p>
+        <div class="home-meta" id="hmet">
+          <div class="hm"><span class="l">LOC&nbsp;</span>Cairo, Egypt</div>
+          <div class="hm"><span class="l">TEL&nbsp;</span>01503333155</div>
+          <div class="hm"><span class="l">EMAIL&nbsp;</span>mohamed-sayid@outlook.com</div>
+        </div>
+        <div class="status-chip" id="schip">
+          <div class="sdot"></div>
+          Active IT Administrator · Ready for DevOps
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-cards" id="nav-cards">
+      <div class="nav-card nc-0" onclick="goPage('summary')">
+        <div class="nc-ico">👤</div>
+        <div class="nc-num">01</div>
+        <div class="nc-name">Summary</div>
+        <div class="nc-hint">IT Specialist profile</div>
+        <div class="nc-arrow">↗</div>
+      </div>
+      <div class="nav-card nc-1" onclick="goPage('experience')">
+        <div class="nc-ico">💼</div>
+        <div class="nc-num">02</div>
+        <div class="nc-name">Experience</div>
+        <div class="nc-hint">Professional history</div>
+        <div class="nc-arrow">↗</div>
+      </div>
+      <div class="nav-card nc-2" onclick="goPage('education')">
+        <div class="nc-ico">🎓</div>
+        <div class="nc-num">03</div>
+        <div class="nc-name">Education</div>
+        <div class="nc-hint">Academic background</div>
+        <div class="nc-arrow">↗</div>
+      </div>
+      <div class="nav-card nc-3" onclick="goPage('projects')">
+        <div class="nc-ico">🏆</div>
+        <div class="nc-num">04</div>
+        <div class="nc-name">Achievements</div>
+        <div class="nc-hint">Network optimizations</div>
+        <div class="nc-arrow">↗</div>
+      </div>
+      <div class="nav-card nc-4" onclick="goPage('skills')">
+        <div class="nc-ico">⚡</div>
+        <div class="nc-num">05</div>
+        <div class="nc-name">Skills</div>
+        <div class="nc-hint">Technical arsenal</div>
+        <div class="nc-arrow">↗</div>
+      </div>
+      <div class="nav-card nc-5" onclick="goPage('contact')">
+        <div class="nc-ico">📡</div>
+        <div class="nc-num">06</div>
+        <div class="nc-name">Contact</div>
+        <div class="nc-hint">Connect via Email/LinkedIn</div>
+        <div class="nc-arrow">↗</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-overlay" id="pg-summary">
+    <div class="pg-back-area">
+      <div><div class="pg-label">01 / Summary</div><div class="pg-h">About <span class="c">Me</span></div></div>
+    </div>
+    <div class="pg-divider"></div>
+    <div class="sum-box">
+      Detail-oriented <span class="hla">IT Specialist and Network Administrator</span> with expertise in managing, securing, and optimizing network infrastructures. Skilled in <span class="hl">troubleshooting</span>, system administration, and ensuring seamless enterprise connectivity. Proficient in configuring <span class="hl">routers, switches, firewalls</span>, and cloud-based solutions.
+    </div>
+    <div class="sum-stats">
+      <div class="stat-c"><div class="stat-n">75%</div><div class="stat-l">Network Performance Increase</div></div>
+      <div class="stat-c"><div class="stat-n">90%</div><div class="stat-l">Security Incidents Reduced</div></div>
+      <div class="stat-c"><div class="stat-n">5+</div><div class="stat-l">Certifications</div></div>
+    </div>
+  </div>
+
+  <div class="page-
